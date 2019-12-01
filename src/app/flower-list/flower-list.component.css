@@ -1,0 +1,14 @@
+img.thumb{
+  margin:8px;
+  cursor: pointer;
+  border: solid 2px #03a9f4;
+  background: #03a9f4;
+}
+
+img.selected{
+  box-shadow: 4px 4px 10px #03a9f4;
+  background: #03a9f4;
+  position: relative;
+  top: -4px;
+  left: -4px;
+}
