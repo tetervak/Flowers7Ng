@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FlowerCatalog} from './flower-catalog/flower-catalog';
 import {FlowerCatalogItem} from './flower-catalog/flower-catalog-item';
-import {BehaviorSubject, Observable} from 'rxjs';
+import catalog from '../assets/data/flower-catalog.json';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,12 +11,9 @@ export class FlowerDataService {
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
     this.flowers = [];
-    this.flowerData = new BehaviorSubject<Flower[]>(this.flowers);
     this.largeImages = [];
-    this.loadFlowerCatalog();
+    this.processFlowerCatalog(catalog);
   }
-  private flowerCatalogUri = 'assets/data/flower-catalog.json';
-  private readonly flowerData: BehaviorSubject<Flower[]>;
   private readonly flowers: Flower[];
   // noinspection JSMismatchedCollectionQueryUpdate
   private largeImages: HTMLImageElement[];
@@ -33,15 +30,8 @@ export class FlowerDataService {
     return flower;
   }
   // get the list of the Flower objects
-  public getFlowerData(): Observable<Flower[]> {
-    return this.flowerData;
-  }
-  // load the data from the JSON file
-  private loadFlowerCatalog() {
-    this.httpClient
-      .get(this.flowerCatalogUri)
-      .subscribe(
-        (flowerCatalog: FlowerCatalog) => this.processFlowerCatalog(flowerCatalog));
+  public getFlowers(): Flower[] {
+    return this.flowers;
   }
 
   private processFlowerCatalog(flowerCatalog: FlowerCatalog) {
@@ -50,7 +40,6 @@ export class FlowerDataService {
       (item: FlowerCatalogItem, index: number) =>
         this.flowers.push(FlowerDataService.item2Flower(index, item)));
     this.preloadLargeImages();
-    this.flowerData.next(this.flowers);
   }
   // preload the large images from the server
   private preloadLargeImages() {

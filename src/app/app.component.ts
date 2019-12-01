@@ -8,7 +8,7 @@ import {FlowerDataService} from './flower-data.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public title = 'Flowers 6 Ng';
+  public title = 'Flowers 7 Ng';
   public flowerList: Flower[];
   public selectedFlower: Flower;
   private flowerDataService: FlowerDataService;
@@ -16,15 +16,8 @@ export class AppComponent implements OnInit {
     this.flowerDataService = flowerDataService;
   }
   ngOnInit(): void {
-    this.flowerDataService.getFlowerData().subscribe(
-      flowers => {
-        if (flowers.length > 0) {
-          this.flowerList = flowers;
-          this.selectFlower(flowers[0]);
-          console.log('data received');
-          console.log(flowers);
-        }
-      });
+    this.flowerList = this.flowerDataService.getFlowers();
+    this.selectedFlower = this.flowerList[0];
   }
   // show the flower
   public selectFlower(flower: Flower) {
